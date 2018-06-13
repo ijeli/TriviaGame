@@ -138,24 +138,53 @@ function fiveQuestion () {
 
 }
 
+function endQuestion() {
+    currentQuestion = questions[5];
+    theQuestion.text("");
+    optionA.text("");
+    optionB.text("")
+    optionC.text("")
+    optionD.text("")
+    stop();
+}
+
 function fourButtons () {
+    var intervalIdLocal;
+    var numberLocal = 2;
+    function decrementLocal() {
+        numberLocal--;
+        if (numberLocal === 0) {
+            $("#thegame").show();
+            $("#status").text("");
+            numberLocal = 2;
+        }
+    }
 
     optionA.on("click", function() {
         if (currentQuestion === questions[3]) {
             correct++;
             $("#status").text("Correct! One Piece is Shonen's longest running Manga!");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             fiveQuestion();
             resetForQuestion();
         }
         else if (currentQuestion === questions[1]) {
             correct++;
             $("#status").text("Correct! Tite Kubo is the creator of Bleach!");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             threeQuestion();
             resetForQuestion();
         }
         else {
             incorrect++;
             $("#status").text("incorrect");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             incorrectAnswer();
             resetForQuestion();
         }
@@ -164,12 +193,18 @@ function fourButtons () {
         if (currentQuestion === questions[4]) {
             correct++;
             $("#status").text("Correct! Shonen is an Action Adventure genre!");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             resetForQuestion();
-            stop();
+            endQuestion();
         }
         else {
             incorrect++;
             $("#status").text("incorrect");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             incorrectAnswer();
             resetForQuestion();
         }
@@ -178,18 +213,27 @@ function fourButtons () {
         if (currentQuestion === questions[0]) {
             correct++
             $("#status").text("Correct! Naruto started in 1997!");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             twoQuestion();
             resetForQuestion();
         }
         else if (currentQuestion === questions[2])  {
             correct++
             $("#status").text("Correct! DragonBall Z put Shonen Weekly on the map!");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             fourQuestion();
             resetForQuestion();
         }
         else {
             incorrect++
             $("#status").text("incorrect");
+            $("#thegame").hide();
+            clearInterval(intervalIdLocal);
+            intervalIdLocal = setInterval(decrementLocal, 1000);
             incorrectAnswer();
             resetForQuestion();
         }
@@ -197,6 +241,9 @@ function fourButtons () {
     optionD.on("click", function() {
         incorrect++;
         $("#status").text("incorrect");
+        $("#thegame").hide();
+        clearInterval(intervalIdLocal);
+        intervalIdLocal = setInterval(decrementLocal, 1000);
         incorrectAnswer();
         resetForQuestion();
     });
