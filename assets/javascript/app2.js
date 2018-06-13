@@ -8,6 +8,8 @@ var usedQuestions = [];
 var displayQuestion;
 var intervalIDlocal;
 var numberLocal;
+$("#stopButton").hide();
+$("#resetButton").hide();
 
 //questions
 var questionOne = "What year was Naruto first published?"; //1997
@@ -41,6 +43,7 @@ var optionD = $("#optionFour");
 
 //functions
 function run() {
+    $("#startButton").hide();
     clearInterval(intervalId);
     intervalId = setInterval(decrement, 1000);
     var currentQuestion;
@@ -49,6 +52,7 @@ function run() {
 }
 
 function stop() {
+    $("#resetButton").show();
     clearInterval(intervalId);
     $("#correct").text("correct " + correct);
     $("#incorrect").text("incorrect " + incorrect);
@@ -58,6 +62,7 @@ function stop() {
 }
 
 function reset () {
+    $("#resetButton").hide();
     number = 20;
     $("#countdown").html(number);
     correct = 0;
@@ -138,13 +143,13 @@ function fourButtons () {
     optionA.on("click", function() {
         if (currentQuestion === questions[3]) {
             correct++;
-            $("#status").text("correct");
+            $("#status").text("Correct! One Piece is Shonen's longest running Manga!");
             fiveQuestion();
             resetForQuestion();
         }
         else if (currentQuestion === questions[1]) {
             correct++;
-            $("#status").text("correct");
+            $("#status").text("Correct! Tite Kubo is the creator of Bleach!");
             threeQuestion();
             resetForQuestion();
         }
@@ -158,7 +163,7 @@ function fourButtons () {
     optionB.on("click", function() {
         if (currentQuestion === questions[4]) {
             correct++;
-            $("#status").text("correct");
+            $("#status").text("Correct! Shonen is an Action Adventure genre!");
             resetForQuestion();
             stop();
         }
@@ -172,13 +177,13 @@ function fourButtons () {
     optionC.on("click", function() {
         if (currentQuestion === questions[0]) {
             correct++
-            $("#status").text("correct");
+            $("#status").text("Correct! Naruto started in 1997!");
             twoQuestion();
             resetForQuestion();
         }
         else if (currentQuestion === questions[2])  {
             correct++
-            $("#status").text("correct");
+            $("#status").text("Correct! DragonBall Z put Shonen Weekly on the map!");
             fourQuestion();
             resetForQuestion();
         }
