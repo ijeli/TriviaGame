@@ -34,6 +34,7 @@ answers.push(questionOneAnswers, questionTwoAnswers, questionThreeAnswers, quest
 $("#startButton").on("click", run);
 //$("#stopButton").on("click", stop);
 $("#resetButton").on("click", reset);
+$("#home").on("click", resetBig);
 
 var theQuestion = $("#question")
 var optionA = $("#optionOne");
@@ -42,7 +43,23 @@ var optionC = $("#optionThree");
 var optionD = $("#optionFour");
 
 //functions
+function resetBig () {
+    stop();
+    $("#startButton").show();
+    $(".startText").show();
+    $("#thegame").hide();
+    $("#correct").hide();
+    $("#incorrect").hide();
+    $("#status").text("");
+    $("#resetButton").hide();
+    $("#countdown").html("");
+    questionOne();
+}
+
 function run() {
+    $("#thegame").show();
+    $("#countdown").html(number);
+    $(".startText").hide();
     $("#startButton").hide();
     clearInterval(intervalId);
     intervalId = setInterval(decrement, 1000);
@@ -59,6 +76,13 @@ function stop() {
     $("#thegame").hide();
     $("#correct").show();
     $("#incorrect").show();
+    $("#status").show();
+    if (correct >= 3) {
+        $("#status").html("<img src = 'assets/images/success.gif' class = 'responsive-image'/><br><h1>TRUE SHONEN MASTER</h1>")
+    }
+    else {
+        $("#status").append("<img src = 'assets/images/fail.gif' class = 'responsive-image'/><br><h2>Try elsewhere filthy casual</h2>")
+    }
 }
 
 function reset () {
@@ -73,19 +97,28 @@ function reset () {
     $("#incorrect").hide();
     clearInterval(intervalId);
     intervalId = setInterval(decrement, 1000);
+    $("#status").text("");
 }
 
 function decrement() {
     number--;
     $("#countdown").html(number);
     if (number === 0) {
-        alert("times up");
+        timesUp();
+        number = 24;
     }
 }
 
 function resetForQuestion() {
-    number = 20;
+    number = 24;
     $("#countdown").html(number);
+    if (currentQuestion === questions[5]) {
+        number = 10;
+    }
+}
+
+function resetForEnd() {
+    number = 4;
 }
 
 function oneQuestion () {
@@ -145,18 +178,22 @@ function endQuestion() {
     optionB.text("")
     optionC.text("")
     optionD.text("")
-    stop();
+    resetForQuestion()
 }
 
 function fourButtons () {
     var intervalIdLocal;
-    var numberLocal = 2;
+    var numberLocal = 4;
     function decrementLocal() {
         numberLocal--;
         if (numberLocal === 0) {
+            clearInterval(intervalIdLocal);
             $("#thegame").show();
             $("#status").text("");
-            numberLocal = 2;
+            numberLocal = 4;
+            if (currentQuestion === questions[5]) {
+                numberLocal = 4;
+            }
         }
     }
 
@@ -164,6 +201,7 @@ function fourButtons () {
         if (currentQuestion === questions[3]) {
             correct++;
             $("#status").text("Correct! One Piece is Shonen's longest running Manga!");
+            $("#status").append("<br><img src = 'assets/images/onepieceSuccess.gif' class = 'responsive-image'/>")
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -173,6 +211,7 @@ function fourButtons () {
         else if (currentQuestion === questions[1]) {
             correct++;
             $("#status").text("Correct! Tite Kubo is the creator of Bleach!");
+            $("#status").append("<br><img src = 'assets/images/bleachSuccess.gif' class = 'responsive-image'/>")
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -181,7 +220,7 @@ function fourButtons () {
         }
         else {
             incorrect++;
-            $("#status").text("incorrect");
+            $("#status").text("");
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -193,6 +232,7 @@ function fourButtons () {
         if (currentQuestion === questions[4]) {
             correct++;
             $("#status").text("Correct! Shonen is an Action Adventure genre!");
+            $("#status").append("<br><img src = 'assets/images/shonenwin.gif' class = 'responsive-image'/>")
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -201,7 +241,7 @@ function fourButtons () {
         }
         else {
             incorrect++;
-            $("#status").text("incorrect");
+            $("#status").text("");
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -213,6 +253,7 @@ function fourButtons () {
         if (currentQuestion === questions[0]) {
             correct++
             $("#status").text("Correct! Naruto started in 1997!");
+            $("#status").append("<br><img src = 'assets/images/nartuoSuccess.gif' class = 'responsive-image'/>")
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -222,6 +263,7 @@ function fourButtons () {
         else if (currentQuestion === questions[2])  {
             correct++
             $("#status").text("Correct! DragonBall Z put Shonen Weekly on the map!");
+            $("#status").append("<br><img src = 'assets/images/dbzSuccess.gif' class = 'responsive-image'/>")
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -230,7 +272,7 @@ function fourButtons () {
         }
         else {
             incorrect++
-            $("#status").text("incorrect");
+            $("#status").text("");
             $("#thegame").hide();
             clearInterval(intervalIdLocal);
             intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -240,7 +282,7 @@ function fourButtons () {
     });
     optionD.on("click", function() {
         incorrect++;
-        $("#status").text("incorrect");
+        $("#status").text("");
         $("#thegame").hide();
         clearInterval(intervalIdLocal);
         intervalIdLocal = setInterval(decrementLocal, 1000);
@@ -251,19 +293,87 @@ function fourButtons () {
 
 
 function incorrectAnswer () {
+    
+
     if (currentQuestion === questions[0]) {
+        $("#status").append("INCORRECT! The correct answer was 1997");
+        $("#status").append("<br><img src = 'assets/images/narutoFail.gif' class = 'responsive-image'/>")
         twoQuestion();
     }
     else if (currentQuestion === questions[1]) {
+        $("#status").append("INCORRECT! The correct answer was Tite Kubo");
+        $("#status").append("<br><img src = 'assets/images/bleachFail.gif' class = 'responsive-image'/>")
         threeQuestion();
     }
     else if (currentQuestion === questions[2]) {
+        $("#status").append("INCORRECT! The correct answer was DragonBall Z");
+        $("#status").append("<br><img src = 'assets/images/dbzFail.gif' class = 'responsive-image'/>")
         fourQuestion();
     }
     else if (currentQuestion === questions[3]) {
+        $("#status").append("INCORRECT! The correct answer was One Piece");
+        $("#status").append("<br><img src = 'assets/images/onepieceFail.gif' class = 'responsive-image'/>")
         fiveQuestion();
     }
     else if (currentQuestion === questions[4]) {
-        stop();
+        $("#status").append("INCORRECT! The correct answer was Action Adventure");
+        $("#status").append("<br><img src = 'assets/images/shonenlose.gif' class = 'responsive-image'/>")
+        endQuestion();
     }
+    else if (currentQuestion === questions[5]) {
+        stop()
+    }
+}
+
+function timesUp() {
+    var intervalIdLocal;
+    var numberLocal = 4;
+    function decrementLocal() {
+        numberLocal--;
+        if (numberLocal === 0) {
+            clearInterval(intervalIdLocal);
+            $("#thegame").show();
+            $("#status").text("");
+            numberLocal = 4;
+            if (currentQuestion === questions[5]) {
+                numberLocal = 4;
+            }
+        }
+    }
+
+    if (currentQuestion === questions[0]) {
+        $("#status").text("");
+        $("#status").text("TIMES UP! The correct answer was 1997");
+        $("#status").append("<br><img src = 'assets/images/narutoFail.gif' class = 'responsive-image'/>")
+        twoQuestion();
+    }
+    else if (currentQuestion === questions[1]) {
+        $("#status").text("");
+        $("#status").text("TIMES UP! The correct answer was Tite Kubo");
+        $("#status").append("<br><img src = 'assets/images/bleachFail.gif' class = 'responsive-image'/>")
+        threeQuestion();
+    }
+    else if (currentQuestion === questions[2]) {
+        $("#status").text("");
+        $("#status").text("TIMES UP! The correct answer was DragonBall Z");
+        $("#status").append("<br><img src = 'assets/images/dbzFail.gif' class = 'responsive-image'/>")
+        fourQuestion();
+    }
+    else if (currentQuestion === questions[3]) {
+        $("#status").text("");
+        $("#status").text("TIMES UP! The correct answer was One Piece");
+        $("#status").append("<br><img src = 'assets/images/onepieceFail.gif' class = 'responsive-image'/>")
+        fiveQuestion();
+    }
+    else if (currentQuestion === questions[4]) {
+        $("#status").text("");
+        $("#status").text("TIMES UP! The correct answer was Action Adventure");
+        $("#status").append("<br><img src = 'assets/images/shonenlose.gif' class = 'responsive-image'/>")
+        endQuestion();
+    }
+    else if (currentQuestion === questions[5]) {
+        $("#status").text("");
+        stop()
+    }
+
 }
